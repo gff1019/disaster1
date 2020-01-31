@@ -11,4 +11,7 @@
 2. Run the following command in the app's directory to run your web app.
     `python run.py`
 
-3. Go to http://0.0.0.0:3001/
+3. Go to https://view6914b2f4-3001.udacity-student-workspaces.com/ 采用这个链接点击，看不到两个图，只能看到一个空的网页，找不出原因，麻烦了
+
+4. train_classifier.py速度较慢请帮忙看下什么原因
+
