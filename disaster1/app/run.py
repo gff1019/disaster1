@@ -40,11 +40,9 @@ def index():
     
     # extract data needed for visuals
     # TODO: Below is an example - modify to extract data for your own visuals
-    genre_counts = df.groupby('genre').count()['message']
-    genre_names = list(genre_counts.index)
     related_counts = df.groupby('related').count()['message']
     related = list(related_counts.index)
-
+    print (related_counts)
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
     graphs_related = [
@@ -62,7 +60,7 @@ def index():
                     'title': "Count"
                 },
                 'xaxis': {
-                    'title': "Genre"
+                    'title': "related"
                 }
             }
         }
