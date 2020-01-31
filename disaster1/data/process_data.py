@@ -3,16 +3,16 @@ import pandas as pd
 from sqlalchemy import create_engine
 
 def load_data(messages_filepath, categories_filepath):
-	'''
-	加载自变量和因变量并且将自变量和因变量合并
-	输入自变量路径：messages_filepath
-	输入因变量路径：categories_filepath
-	返回合并后数据集：df
-	'''
-
-    messages = pd.read_csv(messages_filepath,dtype=str)  #导入自变量
-    categories = pd.read_csv(categories_filepath,dtype=str)  #导入因变量
-    df = pd.merge(messages,categories) #自变量和因变量合并
+	"""
+    加载自变量和因变量并且将自变量和因变量合并
+    输入自变量路径：messages_filepath
+    输入因变量路径：categories_filepath
+    返回合并后数据集：df
+    """
+    
+    messages = pd.read_csv(messages_filepath,dtype=str) #导入自变量
+    categories = pd.read_csv(categories_filepath,dtype=str) #导入因变量
+    df = pd.merge(messages,categories)#自变量和因变量合并
     return df
 
 def clean_data(df):
