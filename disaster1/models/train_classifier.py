@@ -29,7 +29,7 @@ from sklearn.metrics import f1_score, precision_score, recall_score
 from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier,GradientBoostingClassifier
 from sklearn.naive_bayes import MultinomialNB
 from sklearn import svm
-from xgboost.sklearn import XGBClassifier
+# from xgboost.sklearn import XGBClassifier
 ##模型管道
 from sklearn.pipeline import Pipeline
 from sklearn.pipeline import FeatureUnion
@@ -38,22 +38,23 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.metrics import classification_report,confusion_matrix
 
 def load_data(database_filepath):
-    #从数据库导入数据
-    ##输入数据库名：database_filepath
-    ##输出自变量（X）和因变量（Y）
+    """从数据库导入数据
+    输入数据库名：database_filepath
+    输出自变量（X）和因变量（Y）
+    """
     engine = create_engine('sqlite:///%s' % (database_filepath))
     df = pd.read_sql('SELECT * FROM DisasterResponse', engine)
     X = pd.read_sql('SELECT message FROM DisasterResponse', engine)
     Y = df.drop(['message','original','genre','id'],axis=1) 
-    
-    return X.iloc[:10],Y.iloc[:10],list(Y.columns)
-#     return X,Y,list(Y.columns)
+#     return X.iloc[:10],Y.iloc[:10],list(Y.columns)
+    return X,Y,list(Y.columns)
 
 
 def tokenize(text):
-    #数据清理
-    ##输入一段文本
-    ##输出分词结果，词性转换，大小写转换
+    """数据清理
+    输入一段文本
+    输出分词结果，词性转换，大小写转换
+    """
     tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
 
@@ -61,20 +62,20 @@ def tokenize(text):
     for tok in tokens:
         clean_tok = lemmatizer.lemmatize(tok).lower().strip()
         clean_tokens.append(clean_tok)
-
     return clean_tokens
 
 
 def build_model():
-    #用管道构建模型，用网格搜索寻找最佳参数
-    ##使用CountVectorizer，TfidfTransformer将拆分后的文本转换为tf-idf格式
-    ##然后使用MultiOutputClassifier交结果级拆分成二分类预测
-    ##模型拟合选择XGBClassifier
-    ##因为模型速度较慢，所以只选择了一个网格搜索参数
+    """用管道构建模型，用网格搜索寻找最佳参数
+    使用CountVectorizer，TfidfTransformer将拆分后的文本转换为tf-idf格式
+    然后使用MultiOutputClassifier交结果级拆分成二分类预测
+    模型拟合选择XGBClassifier
+    因为模型速度较慢，所以只选择了一个网格搜索参数
+    """
     pipeline = Pipeline([
                 ('vect', CountVectorizer(tokenizer=tokenize)),
                 ('tfidf', TfidfTransformer()),
-                ('clf', MultiOutputClassifier(XGBClassifier()))
+                ('clf', MultiOutputClassifier(RandomForestClassifier()))
                 ])
     parameters = {
         'vect__max_df': [0.75, 0.5]
@@ -84,7 +85,9 @@ def build_model():
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
-    #模型评估使用classification_report方法，并且根据36组结果的平均值分析效果
+    """模型评估使用classification_report方法，并且根据36组结果的平均值分析效果
+    输入训练好的模型，自变量测试集，因变量测试集，因变量列表
+    """
     y_pred=model.predict(X_test['message'].tolist())
     y_pred = pd.DataFrame(y_pred)
     y_pred.columns=category_names
@@ -93,7 +96,8 @@ def evaluate_model(model, X_test, Y_test, category_names):
 
 
 def save_model(model, model_filepath): 
-    #将模型model保存在model_filepath中，格式为xx.pkl
+    """将模型model保存在model_filepath中，格式为xx.pkl
+    """
     with open(model_filepath, 'wb') as file:  
         pickle.dump(model, file)
 

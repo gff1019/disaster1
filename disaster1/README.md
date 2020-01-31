@@ -15,3 +15,19 @@
 
 4. train_classifier.py速度较慢请帮忙看下什么原因
 
+###文件介绍
+
+##app包含网页程序和可视化代码
+
+#templates：网页的程序
+#run.py：可视化的代码
+
+##data：包含数据文件和数据处理代码
+#disaster_categories.csv：因变量数据
+#disaster_messages.csv：自变量数据
+#process_data.py：数据处理代码
+#DisasterResponse.db：数据处理后结果的数据库
+
+##model：包含模型代码和训练后模型的保存文件
+#train_classifier.py：模型的训练代码
+#classifier.pkl：训练后的模型
