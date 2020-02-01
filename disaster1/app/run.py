@@ -42,11 +42,11 @@ def index():
     # TODO: Below is an example - modify to extract data for your own visuals
     related_counts = df.groupby('related').count()['message']
     related = list(related_counts.index)
-    print (related_counts)
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
-    graphs_related = [
-        {
+    graphs=[]
+    graphs1={}
+    graphs1 =         {
             'data': [
                 Bar(
                     x=related,
@@ -64,19 +64,12 @@ def index():
                 }
             }
         }
-    ]
     
-    # encode plotly graphs in JSON
-    related_ids = ["graph-{}".format(i) for i, _ in enumerate(graphs_related)]
-    related_graphJSON = json.dumps(graphs_related, cls=plotly.utils.PlotlyJSONEncoder)
-    
-    # render web page with plotly graphs
-    return render_template('master.html', ids=related_ids, graphJSON=related_graphJSON)
-    #request masssage plot
+#request masssage plot
     request_counts = df.groupby('request').count()['message']
     request = list(request_counts.index)
-    graphs_request = [
-        {
+    graphs2={}
+    graphs2 =         {
             'data': [
                 Bar(
                     x=request,
@@ -94,16 +87,15 @@ def index():
                 }
             }
         }
-    ]
     
+    graphs.append(graphs1)
+    graphs.append(graphs2)
     # encode plotly graphs in JSON
-    request_ids = ["graph-{}".format(i) for i, _ in enumerate(graphs_request)]
-    request_graphJSON = json.dumps(graphs_request, cls=plotly.utils.PlotlyJSONEncoder)
+    ids = ["graph-{}".format(i) for i, _ in enumerate(graphs)]
+    graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
     
     # render web page with plotly graphs
-    return render_template('master.html', ids=request_ids, graphJSON=request_graphJSON)
-
-# web page that handles user query and displays model results
+    return render_template('master.html', ids=ids, graphJSON=graphJSON)
 @app.route('/go')
 def go():
     # save user input in query
@@ -122,7 +114,7 @@ def go():
 
 
 def main():
-    app.run(host='0.0.0.0', port=3001, debug=True)
+    app.run(host='127.0.1.1', port=3001, debug=True)
 
 
 if __name__ == '__main__':

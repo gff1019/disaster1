@@ -11,9 +11,10 @@
 2. Run the following command in the app's directory to run your web app.
     `python run.py`
 
-3. Go to https://view6914b2f4-3001.udacity-student-workspaces.com/ 采用这个链接点击，看不到两个图，只能看到一个空的网页，找不出原因，麻烦了
 
-4. train_classifier.py速度较慢请帮忙看下什么原因
+3.process_data.py在我的电脑上运行正常，日志在data/process_data运行日志.png
+
+4.输入输出的注释已经修改
 
 ###文件介绍
 
