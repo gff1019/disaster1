@@ -8,6 +8,7 @@ from nltk.tokenize import word_tokenize
 from flask import Flask
 from flask import render_template, request, jsonify
 from plotly.graph_objs import Bar
+from plotly.graph_objects import Pie
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
 
@@ -71,20 +72,16 @@ def index():
     graphs2={}
     graphs2 =         {
             'data': [
-                Bar(
-                    x=request,
-                    y=request_counts
+                Pie(
+                    labels=request,
+                    values=request_counts
                 )
             ],
 
             'layout': {
                 'title': 'Distribution of Message request',
-                'yaxis': {
-                    'title': "Count"
-                },
-                'xaxis': {
-                    'title': "request"
-                }
+                'textinfo': 'value',
+                'hoverinfo':'label+percent'
             }
         }
     
